@@ -1,5 +1,15 @@
 # vue-hello-docker
 
+## Docker
+### Build 
+```
+docker build -t vue-docker:latest .
+```
+### Run 
+```
+docker run -p 8080:80 vue-docker:latest
+```
+
 ## Project setup
 ```
 yarn install
