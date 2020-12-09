@@ -1,13 +1,16 @@
-# build stage
-FROM node:lts-alpine as build-stage
-WORKDIR /app
-COPY package*.json ./
-RUN yarn install
-COPY . .
-RUN yarn build
+FROM node:15
 
-# production stage
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# copy project files and folders to the current working directory (i.e. 'app' folder)
+COPY ./ ./
+
+# install project dependencies
+RUN yarn install
+
+# build app for production with minification
+RUN yarn run build
+
+# install simple http server for serving static content
+RUN yarn global add http-server
+
+EXPOSE 8080
+CMD [ "http-server", "dist" ]
